@@ -27,7 +27,7 @@ public class ActiveEvent implements Comparable<ActiveEvent> {
     public void print() {
         Date now = new Date();
         SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yyyy'-'HH:mm:ss");
-        System.out.println(ft.format(now) + " " + username + " " + text + ";");
+        System.out.println(ft.format(date) + " " + username + " " + text + ";");
     }
 }
 
