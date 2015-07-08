@@ -13,6 +13,15 @@ public class Scheduling extends Thread {
     }
 
     public void run() {
+        synchronized (timetable) {
+            long curTime = System.currentTimeMillis();
+            for (User user:timetable.getUsers())
+                if (user.isActive())
+                    for (Event event:user.getEvents())
+                        if (event.getTime().getTime() < curTime && !event.isWas()) {
+                            event.was();
+                        }
+        }
         while (true) {
             try {
                 Thread.sleep(1000);
