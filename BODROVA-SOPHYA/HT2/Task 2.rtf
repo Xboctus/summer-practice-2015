@@ -1,0 +1,100 @@
+USE menagerie;
+
+CREATE TABLE `cities` (
+  `Name` varchar(40),
+  `Population` int(11),
+  `Area` int(11)
+  `Country` varchar(40),
+  PRIMARY KEY (`Name`)
+
+INSERT INTO `cities`
+VALUES ('Ankara',4900,1417,'Turkey'), ('Barcelona',1600,100,'Spain'),
+('Brasilia',2600,5801,'Brazil'),
+('Canberra',356,814,'Australia'),
+('Krasnoyarsk',1000,359,'Russia'),
+('London',8000,1580,'the UK'),
+('Moscow',12000,2511,'Russia'),
+('New Delhi',295,42,'India'),
+('New York',8000,1214,'the USA'),
+('Ottawa',883,2790,'Canada'),
+('Rabat',1600,117,'Morocco'),
+('Riga',701,304,'Latvia'),
+('Rome',3000,1287,'Italy'),
+('St.Petersburg',5000,1439,'Russia');
+
+CREATE TABLE `countries` (
+  `Name` varchar(40),
+  `Population` int(11),
+  `Area` int(11),
+  `Capital` varchar(40),
+  PRIMARY KEY (`Name`),
+  KEY `Capital` (`Capital`),
+  CONSTRAINT `countries_ibfk_1` FOREIGN KEY (`Capital`) REFERENCES `cities` (`Name`));
+
+INSERT INTO `countries`
+VALUES ('Australia',23130,7700,'Canberra'),
+('Brazil',201000,8500,'Brasilia'),
+('Canada',35700,9900,'Ottawa'),
+('India',1300000,3287,'New Delhi'),
+('Italy',61000,301,'Rome'),
+('Latvia',2000,66,'Riga'),
+('Morocco',32600,447,'Rabat'),
+('Russia',147000,17125,'Moscow'),
+('the UK',63000,243,'London'),
+('Turkey',81700,783,'Ankara');
+
+CREATE TABLE `festival` (
+  `Name` varchar(40),
+  `City` varchar(40),
+  `Places` int(11),
+  `Country` varchar(40),
+  `Organizer` varchar(40),
+  KEY `Organizer` (`Organizer`),
+  KEY `Country` (`Country`),
+  KEY `City` (`City`),
+  CONSTRAINT `festival_ibfk_1` FOREIGN KEY (`Organizer`) REFERENCES `festivalorganizer` (`Name`),
+  CONSTRAINT `festival_ibfk_2` FOREIGN KEY (`Country`) REFERENCES `festivalorganizer` (`AccreditationCountry`),
+  CONSTRAINT `festival_ibfk_3` FOREIGN KEY (`City`) REFERENCES `cities` (`Name`));
+
+INSERT INTO `festival` 
+VALUES ('International MF','Ankara',1,'Turkey','The UEF'),
+('Russian movies','Brasilia',5,'Brazil','Roszarubezhtsentr'),
+('Invasion','Moscow',1,'Russia','The URM'),
+('Wight night','Rome',1,'Italy','The Ministry of culture'),
+('Barnet Festival','London',1,'The UK','The LMM'),
+('Holy','New Delhi',10,'India','People'),
+('Folk festival','Canberra',2,'Australia','EPIC'),
+('World jazz fest','Riga',1,'Latvia','Jazz union'),
+('Mawazine','Rabat',1,'Morocco','Moroccan int assoc'),
+('OIAF','Ottawa',5,'Canada','Canadian film Institute'); 
+
+CREATE TABLE `festivalorganizer` (
+  `Name` varchar(40),
+  `AccreditationCountry` varchar(40),
+  PRIMARY KEY (`Name`),
+  KEY `AccreditationCountry` (`AccreditationCountry`),
+  CONSTRAINT `festivalorganizer_ibfk_1` FOREIGN KEY (`AccreditationCountry`) REFERENCES `countries` (`Name`)
+);
+
+INSERT INTO `festivalorganizer` 
+VALUES ('EPIC','Australia'),
+('Roszarubezhtsentr','Brazil'),
+('Canadian film Institute','Canada'),
+('People','India'),
+('The Ministry of culture','Italy'),
+('Jazz union','Latvia'),
+('Moroccan int assoc','Morocco'),
+('The URM','Russia'),
+('The LMM','The UK'),
+('The UEF','Turkey');
+ 
+SELECT Name,Population FROM cities WHERE Country='Russia';
+
+SELECT Country,SUM(Area) FROM cities GROUP BY Country;
+
+SELECT Name,Country FROM festival WHERE Country=(select Name FROM countries WHERE Population=(SELECT max(Population) FROM countries));
+
+SELECT Name, City FROM festival WHERE City=any(SELECT Name FROM cities WHERE Population>1000);
+
+SELECT AVG(Population) FROM countries WHERE Capital=ANY(SELECT * FROM (SELECT City FROM festival JOIN cities ON cities.Name=City ORDER BY cities.Population DESC LIMIT 3) t);
+}
