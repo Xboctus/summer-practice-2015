@@ -10,7 +10,6 @@ public class Main {
     int defaultTimeZone = 3;
     Pattern pattern = Pattern.compile("(0?[1-9]|[12][0-9]|3[01])\\.(0?[1-9]|1[012])\\.((19|20)\\d\\d)\\-([01]?[0-9]|2[0-3])\\:[0-5][0-9]\\:[0-5][0-9]");
     DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy'-'HH:mm:ss");
-    Scheduling scheduling;
     boolean isSchedulingWork = false;
 
     public static void main(String[] args) throws ParseException, InterruptedException {
@@ -68,9 +67,6 @@ public class Main {
                                 timetable.getUser(userIndex).setTimeZone(Integer.parseInt(params[2]));
                                 timetable.getUser(userIndex).setActive(Boolean.parseBoolean(params[3]));
                                 System.out.println("User " + params[1] + " was modified");
-                                if (isSchedulingWork) {
-                                    scheduling.updateTable(null);
-                                }
                             } else {
                                 System.out.println("Error: user with this name don't exist");
                             }
@@ -92,9 +88,6 @@ public class Main {
                                     if (timetable.getUser(userIndex).isUnique(params[2])) {
                                         timetable.getUser(userIndex).addEvent(eventTime, params[2]);
                                         System.out.println("Event was added to user " + params[1]);
-                                        if (isSchedulingWork) {
-                                            scheduling.updateTable(new Event(eventTime, params[2]));
-                                        }
                                     } else
                                         System.out.println("Error: event with this text already exist");
                                 } else {
@@ -124,9 +117,6 @@ public class Main {
                                         eventTime.setTime(eventTime.getTime() + random + (defaultTimeZone - timetable.getUser(userIndex).getTimeZone()) * 3600000);
                                         timetable.getUser(userIndex).addEvent(eventTime, params[2]);
                                         System.out.println("Random time event was added to user " + params[1]);
-                                        if (isSchedulingWork) {
-                                            scheduling.updateTable(new Event(eventTime, params[2]));
-                                        }
                                     } else {
                                         System.out.println("Error: wrong dateTo format. Usage: dd.MM.yyyy-HH:mm:ss");
                                     }
@@ -151,9 +141,6 @@ public class Main {
                                 if (eventInex != -1) {
                                     timetable.getUser(userIndex).removeEvent(eventInex);
                                     System.out.println("Event was removed from " + params[1] + "'s events");
-                                    if (isSchedulingWork) {
-                                        scheduling.updateTable(null);
-                                    }
                                 } else {
                                     System.out.println("Error: user don't have this event");
                                 }
@@ -180,9 +167,6 @@ public class Main {
                                         Event event = userFrom.getEvent(eventIndex);
                                         userTo.addEvent(event.getTime(), event.getDescription());
                                         System.out.println("Event was copped from user " + params[1] + " to user " + params[3]);
-                                        if (isSchedulingWork) {
-                                            scheduling.updateTable(event);
-                                        }
                                     } else {
                                         System.out.println("Error: user " + params[3] + " already have this event");
                                     }
@@ -219,10 +203,9 @@ public class Main {
                 case "startScheduling" :
                     if (params.length == 1) {
                         if (!isSchedulingWork) {
-                            isSchedulingWork = true;
-                            scheduling = new Scheduling(timetable);
-                            scheduling.start();
-                            System.out.println("Scheduling started work");
+                                isSchedulingWork = true;
+                                Scheduling scheduling = new Scheduling(timetable);
+                                scheduling.start();
                         }
                         else {
                             System.out.println("Scheduling already started work");

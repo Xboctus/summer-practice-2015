@@ -35,11 +35,12 @@ public class User {
         this.status = active;
     }
 
-    protected Event getFirstEvent() {
-        if (eventList.isEmpty()) {
-            return null;
-        }
-        return eventList.get(0);
+    protected void userActiveOn() {
+        status = true;
+    }
+
+    protected void userActiveOff() {
+        status = false;
     }
 
     protected void addEvent(Date time, String description) {
@@ -110,32 +111,6 @@ public class User {
 
     protected void removeEvent(int index) {
         eventList.remove(index);
-    }
-
-    protected void delEvent(Event badEvent) {
-        iter = eventList.listIterator();
-        int index = 0;
-        while (iter.hasNext()) {
-            if (eventList.get(index).compareTo(badEvent) == 0) {
-                eventList.remove(index);
-                return;
-            }
-            iter.next();
-            index++;
-        }
-    }
-
-    protected void clear() {
-        iter = eventList.listIterator();
-        int index = 0;
-        while (iter.hasNext()) {
-            if (!eventList.get(index).isNeed()) {
-                eventList.remove(index);
-                return;
-            }
-            iter.next();
-            index++;
-        }
     }
 
     protected void show() {
