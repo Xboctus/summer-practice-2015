@@ -132,17 +132,13 @@ select Name
 from Festival
 where City in (select Name from Cities where Population > 3000);
 
-select avg(Population) as avg
-from Countries
-where Name in (
-select x.Country as Country
-from (select Country, count(*) as Count
-from Festival
-where Name in
-(select Name
-from Festival
-where City = (select Name
+select Country, avg(Population) as avg
 from Cities
-where Population = (select max(Population) from Cities)))
-group by Country) as x
-where x.Count = 3);
+where Country in (
+select Cities.Country
+from (
+select Festival.City
+from Festival, Cities
+where Festival.City=Cities.name
+order by Cities.Population desc
+limit 3) as x, Cities where Cities.Name = x.City) group by Country;
