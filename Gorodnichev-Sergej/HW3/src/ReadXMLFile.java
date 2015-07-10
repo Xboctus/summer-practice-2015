@@ -78,7 +78,8 @@ public class ReadXMLFile {
                             Book book = new Book();
                             if (node.getNodeType() == Node.ELEMENT_NODE) {
                                 Element element = (Element) node;
-                                book.isbn = element.getElementsByTagName("isbn").item(0).getTextContent();
+                                if(element.getElementsByTagName("isbn").getLength() >= 1)
+                                    book.isbn = element.getElementsByTagName("isbn").item(0).getTextContent();
                                 book.author = element.getElementsByTagName("author").item(0).getTextContent();
                                 book.title = element.getElementsByTagName("title").item(0).getTextContent();
 
