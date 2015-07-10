@@ -1,0 +1,107 @@
+mysql> create table Cities(
+    -> Name Varchar(40),
+    -> Population int,
+    -> Area int,
+    -> Country Varchar(40),
+    -> Primary key (Name)
+    -> );
+
+mysql> create table Countries(
+    -> Name Varchar(40),
+    -> Population int,
+    -> Area int,
+    -> Capital Varchar(40),
+    -> Primary key (Name),
+    -> Foreign key (Capital) referenced Cities (Name)
+     );
+
+create table FestivalOrganizer (
+	Name VARCHAR(40),
+	AccreditationCountry VARCHAR(40),
+	primary key(Name, AccreditationCountry),
+	foreign key(AccreditationCountry) references Countries (Name)
+);
+create table Festival (
+	Name VARCHAR(40),
+	City VARCHAR(40),
+	Places INT,
+	Country VARCHAR(40),
+	Organizer VARCHAR(40),
+	foreign key(Organizer, Country) references FestivalOrganizer (Name, AccreditationCountry),
+	foreign key(City) references Cities (Name)
+);
+
+Insert into Cities values ('amsterdam',821,219,'holland');
+Insert into Cities values ('beijing',21516,16411,'china');
+Insert into Cities values ('dublin',506,114,'ireland');
+Insert into Cities values ('madrid',3041,607,'spain');
+Insert into Cities values ('moscow',12197,2511,'rus');
+Insert into Cities values ('paris',2196,105,'france');
+Insert into Cities values ('rome',2870,1287,'italy');
+Insert into Cities values ('stockholm',871,188,'swed');
+Insert into Cities values ('tallinn',435,159,'est');
+
+
+insert into Countries values('holland',16805,41526,'amsterdam');
+insert into Countries values('france',66200,674685,'paris');
+insert into Countries values('china',1368660,9596960,'beijing');
+insert into Countries values('est',1312,45227,'tallinn');
+insert into Countries values('swed',9723,449964,'stockholm');
+insert into Countries values('spain',47370,504782,'madrid');
+insert into Countries values('rus',146267,17125407,'moscow');
+insert into Countries values('italy',61482,301340,'rome');
+insert into Countries values('ireland',4593,70273,'dublin');
+
+
+insert into festivalOrganizer values('org1','spain');
+insert into festivalOrganizer values('org1','rus');
+insert into festivalOrganizer values('org1','est');
+insert into festivalOrganizer values('org2','swed');
+insert into festivalOrganizer values('org2','spain');
+insert into festivalOrganizer values('org2','rus');
+insert into festivalOrganizer values('org3','france');
+insert into festivalOrganizer values('org3','italy');
+insert into festivalOrganizer values('org3','rus');
+insert into festivalOrganizer values('org3','swed');
+insert into festivalOrganizer values('org4','est');
+insert into festivalOrganizer values('org5','holland');
+insert into festivalOrganizer values('org6','china');
+
+
+insert into festival values('fest1','madrid',464,'spain','org1');
+insert into festival values('fest1','moscow',742,'rus','org1');
+insert into festival values('fest2','moscow',742,'rus','org1');
+insert into festival values('fest3','stockholm',856,'swed','org2');
+insert into festival values('fest4','paris',506,'france','org3');
+insert into festival values('fest5','rome',670,'italy','org3');
+insert into festival values('fest6','tallinn',360,'est','org4');
+insert into festival values('fest7','tallinn',400,'est','org4');
+insert into festival values('fest8','amsterdam',574,'holland','org5');
+insert into festival values('fest9','amsterdam',200,'holland','org5');
+insert into festival values('fest10','beijing',842,'china','org6');
+
+select Name from Festival where Country in
+(select Name from Countries where Countries.Population =  
+(select max(Population) from Countries));
+
+select Name from Festival where City in (select Name from Cities where Population > 1000);
+
+select avg(Population)
+from Countries
+where Name in (
+select cities.country
+from (  select festival.city
+from festival, Cities
+where festival.city=cities.name
+order by Cities.population desc
+limit 3) as x, Cities
+where Cities.name = x.city);
+
+
+
+
+
+
+
+
+

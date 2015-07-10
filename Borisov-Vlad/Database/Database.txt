@@ -1,0 +1,71 @@
+CREATE DATABASE masterpiece;
+
+USE masterpiece;
+
+create table Cities(Name varchar(40), Population int, Area int, Country varchar(40), Primary key (Name));
+
+create table Countries(Name varchar(40), Population int, Area int, Country varchar(40), Primary key (Name), Foreign key (Capital) referenced Cities (Name));
+
+Insert into Cities(Name,Population,Area,Country) value
+->('Canderra',355596,814,'Australia')
+->('London',8416999,1580,'England')
+->('Madrid',3041579,607,'Spain')
+->('Moscow',12197596,2511,'Russia')
+->('Ottawa',883391,2790,'Canada')
+->('Paris',2196936,105,'French')
+->('Roma',2870493,1287,'Italy')
+->('Stockholm',871952,188,'Sweden')
+->('Warszawa',1810598,523,'Poland')
+->('Washington',601723,177,USA'');
+
+Insert into Countries(Name,Population,Area,Capital) value
+->('Australia',23130931,7692024,'Canberra')
+->('Canada',35675834,7692024,'Canberra')
+->('England',63395574,243809,'London')
+->('French',66200000,674685,'Paris')
+->('Italy',61482297,301340,'Roma')
+->('Poland',38493957,312679,'Warszawa')
+->('Russia',146267288,17125407,'Moscow')
+->('Spain',47370542,504782,'Madrid')
+->('Sweden',9723809,449964,'Stockholm')
+->('USA',321348000,9519431,'Washington');
+
+select Name,Population from cities where Country='Russia';
+
+select Country, sum(Area) from cities group by Country;
+
+create table FestivalOrganizer (Name varchar(40), AccreditationCountry varchar(40), primary key(Name, AccreditationCountry),
+foreign key(AccreditationCountry) references Countries (Name));
+
+Insert into FestivalOrganizer(Name,AccreditationCountry) value
+->('o1','Australia')
+->('o2','Canada')
+->('o3','England')
+->('o4','French')
+->('o5','Italy')
+->('o6','Poland')
+->('o7','Russia')
+->('o8','Spain')
+->('o9','Sweden')
+->('o10','USA');
+
+create table Festival (Name varchar(40), City varchar(40), Places int, Country varchar(40), Organizer varchar(40),
+foreign key(Organizer, Country) references FestivalOrganizer (Name, AccreditationCountry),foreign key(City) references Cities (Name));
+
+Insert into Festival(Name,City,Places,Country,Organizer) value
+->('f1','Canberra',34,'Australia','o1')
+->('f2','London',132,'England','o2')
+->('f3','Madrid',12,'Spain','o3')
+->('f4','Moscow',342,'Russia','o4')
+->('f5','Ottawa',65,'Canada','o5')
+->('f6','Paris',123,'French','o6')
+->('f7','Roma',87,'Italy','o7')
+->('f8','Stockholm',29,'Sweden','o8')
+->('f9','Warszawa',54,'Poland','o9')
+->('f10','Washington',90,'USA','o10');
+
+select Name,Country from festival where Country=(select Name from countries where Population=(select max(Population) from countries));
+
+select Name, City from festival where City=any(select Name from cities where Population>1000);
+
+select AVG(Population) from countries where Capital=ANY(select * FROM (select City FROM festival JOIN cities ON cities.Name=City ORDER BY cities.Population DESC LIMIT 3) t);
