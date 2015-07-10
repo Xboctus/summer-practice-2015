@@ -12,8 +12,8 @@ import org.xml.sax.Attributes;
 public class SaxHandler extends DefaultHandler {
     public List<Book> books = new ArrayList<>();
 
-    private Stack<String> elementStack = new Stack<String>();
-    private Stack<Object> objectStack  = new Stack<Object>();
+    private Stack<String> elementStack = new Stack<>();
+    private Stack<Object> objectStack  = new Stack<>();
 
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -38,15 +38,17 @@ public class SaxHandler extends DefaultHandler {
         String value = new String(ch, start, length).trim();
         if(value.length() == 0) return; // ignore white space
 
-        if(currentElement().equals("author")) {
-            Book book = (Book) this.objectStack.peek();
-            book.author = value;
-        } else if(currentElement().equals("title")) {
-            Book book = (Book) this.objectStack.peek();
-            book.title = value;
-        } else if(currentElement().equals("isbn")) {
-            Book book = (Book) this.objectStack.peek();
-            book.isbn = value;
+        Book book = (Book) this.objectStack.peek();
+        switch(currentElement()) {
+            case "author":
+                book.author = value;
+                break;
+            case "title":
+                book.title = value;
+                break;
+            case "isbn":
+                book.isbn = value;
+                break;
         }
     }
 
