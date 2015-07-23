@@ -31,27 +31,29 @@
             <c:if test="${!empty files}">
               <c:forEach items="${files}" var="file">
                 <tr>
-                  <td>${file.getId()}</td>
+                  <td>${file.id}</td>
                   <c:choose>
-                    <c:when test="${file.getType() == 1}">
-                      <td><a href="/folder/${file.getId()}">${file.getName()}</a></td>
+                    <c:when test="${file.type == 1}">
+                      <td><a href="/folder/${file.id}">${file.name}</a></td>
                       <td><i class="fa fa-folder"></i></td>
                     </c:when>
-                    <c:when test="${file.getType() == 0}">
-                      <td>${file.getName()}</td>
+                    <c:when test="${file.type == 0}">
+                      <td>${file.name}</td>
                       <td><i class="fa fa-file"></i></td>
                     </c:when>
                     <c:otherwise>
-                      <td>${file.getName()}</td>
+                      <td>${file.name}</td>
                       <td></td>
                     </c:otherwise>
                   </c:choose>
                   <td>
                     <c:if test="${file.userId == user.id}">
-                      <a name="button" class="btn btn-default btn-sm" href="/delete/${file.getId()}"><i class="fa fa-trash"></i>Delete</a>
+                      <a name="button" class="btn btn-default btn-sm" href="/delete/${file.id}"><i class="fa fa-trash"></i>Delete</a>
                       <a name="button" class="btn btn-default btn-sm" href="/share/${file.id}"><i class="fa fa-share-alt"></i>Share</a>
                     </c:if>
-                    <a name="button" class="btn btn-default btn-sm" href="#"><i class="fa fa-cloud-download"></i>Download</a>
+                    <c:if test="${file.type == 0}">
+                      <a name="button" class="btn btn-default btn-sm" href="/download/${file.id}"><i class="fa fa-cloud-download"></i>Download</a>
+                    </c:if>
                   </td>
                 </tr>
               </c:forEach>

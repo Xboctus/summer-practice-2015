@@ -11,7 +11,7 @@
             <div class="form-group">
               <form:label path="userId" cssClass="col-sm-1 control-label">Add user to share:</form:label>
               <div class="col-sm-11">
-                <form:input path="userId" cssClass="form-control"></form:input>
+                <form:input path="userId" cssClass="form-control"/>
               </div>
             </div>
             <div class="form-group">
@@ -33,10 +33,10 @@
               <tbody>
               <c:forEach items="${users}" var="user">
                 <tr>
-                  <td>${user.getId()}</td>
-                  <td>${user.getLogin()}</td>
+                  <td>${user.id}</td>
+                  <td>${user.login}</td>
                   <td>
-                    <a name="button" class="btn btn-default btn-sm" href="/share/${id}/delete/${user.getId()}">Delete</a>
+                    <a name="button" class="btn btn-default btn-sm" href="/share/${id}/delete/${user.id}">Delete</a>
                   </td>
                 </tr>
               </c:forEach>

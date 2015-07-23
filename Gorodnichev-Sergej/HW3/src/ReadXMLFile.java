@@ -19,10 +19,7 @@ import java.util.*;
  */
 public class ReadXMLFile {
     public static void main(String[] args) {
-        try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "123456");
-            Statement statement = conn.createStatement();
-
+        try(Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "123456"); Statement statement = conn.createStatement();) {
             File dir = new File("xmlpath");
             if (!dir.isDirectory())
                 throw new Exception("Can't find directory");

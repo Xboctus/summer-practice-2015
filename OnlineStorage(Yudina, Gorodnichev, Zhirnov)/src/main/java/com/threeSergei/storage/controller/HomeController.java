@@ -209,7 +209,8 @@ public class HomeController {
     @RequestMapping(value = "/download/{id}")
     public void downloadAction(@PathVariable("id") int id, HttpServletRequest request, HttpServletResponse response) throws IOException {
         UserEntity current = userService.getCurrent();
-        if (!userCanAccess(current, id)) return;
+        StoreEntity store = storeService.get(id);
+        if (!userCanAccess(current, id) || store.getType() != 0) return;
 
         ServletContext context = request.getServletContext();
 
