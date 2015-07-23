@@ -1,0 +1,12 @@
+127.0.0.1 - - [17/Jul/2015:01:48:07 +0300] "GET /admin HTTP/1.1" 200 5177 http-bio-8080-exec-3 41031
+127.0.0.1 - - [17/Jul/2015:09:06:06 +0300] "GET /admin HTTP/1.1" 500 12757 http-bio-8080-exec-1 645
+127.0.0.1 - - [17/Jul/2015:09:06:09 +0300] "GET /admin/ HTTP/1.1" 500 12757 http-bio-8080-exec-2 316
+127.0.0.1 - - [17/Jul/2015:09:19:54 +0300] "GET /admin HTTP/1.1" 200 5177 http-bio-8080-exec-2 1237
+127.0.0.1 - - [17/Jul/2015:09:19:54 +0300] "GET /admin HTTP/1.1" 200 5177 http-bio-8080-exec-1 1697
+127.0.0.1 - - [17/Jul/2015:09:22:01 +0300] "GET /admin HTTP/1.1" 200 6010 http-bio-8080-exec-5 68
+127.0.0.1 - - [17/Jul/2015:09:22:02 +0300] "GET /resources/css/bootstrap.min.css HTTP/1.1" 304 - http-bio-8080-exec-8 118
+127.0.0.1 - - [17/Jul/2015:09:22:02 +0300] "GET /resources/css/skins/_all-skins.css HTTP/1.1" 304 - http-bio-8080-exec-2 33
+127.0.0.1 - - [17/Jul/2015:09:22:02 +0300] "GET /resources/js/bootstrap.js HTTP/1.1" 304 - http-bio-8080-exec-7 88
+127.0.0.1 - - [17/Jul/2015:09:22:02 +0300] "GET /resources/js/jQuery-2.1.4.min.js HTTP/1.1" 304 - http-bio-8080-exec-6 103
+127.0.0.1 - - [17/Jul/2015:09:22:02 +0300] "GET /resources/css/AdminLTE.min.css HTTP/1.1" 304 - http-bio-8080-exec-9 133
+127.0.0.1 - - [17/Jul/2015:09:22:02 +0300] "GET /resources/js/app.js HTTP/1.1" 304 - http-bio-8080-exec-10 114
